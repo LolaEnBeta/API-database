@@ -54,7 +54,8 @@ def get_users(user_id):
 
     if (query.execute(sql)):
         user = query.fetchone()
-
+        if not user:
+            abort(404)
         query.close()
         conn.commit()
         conn.close()
@@ -62,6 +63,10 @@ def get_users(user_id):
 
     else:
         return "An erros has ocurred"
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response("not found", 404)
 
 if __name__ == "__main__":
     app.run(debug=True)
