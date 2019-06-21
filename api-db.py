@@ -30,9 +30,30 @@ def create_user():
     """
 
     if (query.execute(sql, arguments)):
+        query.close()
+        conn.commit()
+        conn.close()
         return "User created successfully"
     else:
         return "An error has ocurred"
+
+@app.route("/users/<int:user_id>", methods=["GET"])
+def get_users(user_id):
+    conn = sqlite3.connect("***/***.db")
+
+    query = conn.cursor()
+
+    sql = "SELECT * FROM users WHERE id = %s" % user_id
+
+    if (query.execute(sql)):
+        user = query.fetchone()
+        query.close()
+        conn.commit()
+        conn.close()
+        return jsonify({"user": user})
+
+    else:
+        return "An erros has ocurred"
 
 if __name__ == "__main__":
     app.run(debug=True)
