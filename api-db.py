@@ -83,5 +83,19 @@ def get_users():
             users.append(row)
         return jsonify({"users": users})
 
+@app.route("/users/<int:user_id>", methods=["DELETE"])
+def delete_user_by_id(user_id):
+    conn = sqlite3.connect("***/***.db")
+
+    query = conn.cursor()
+
+    sql = "DELETE FROM users WHERE id = %s" % user_id
+
+    if (query.execute(sql)):
+        query.close()
+        conn.commit()
+        conn.close()
+        return "user deleted"
+
 if __name__ == "__main__":
     app.run(debug=True)
