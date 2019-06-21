@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response, abort
 import sqlite3
 
 app = Flask(__name__)
@@ -12,6 +12,9 @@ def create_user():
     conn = sqlite3.connect("***/***.db")
 
     query = conn.cursor()
+
+    if not "name" in request.json or not "age" in request.json:
+        abort(400)
 
     name = request.json.get("name")
     age = request.json.get("age")
@@ -37,6 +40,10 @@ def create_user():
     else:
         return "An error has ocurred"
 
+@app.errorhandler(400)
+def bad_request(error):
+    return make_response("bad request", 400)
+
 @app.route("/users/<int:user_id>", methods=["GET"])
 def get_users(user_id):
     conn = sqlite3.connect("***/***.db")
@@ -47,6 +54,7 @@ def get_users(user_id):
 
     if (query.execute(sql)):
         user = query.fetchone()
+
         query.close()
         conn.commit()
         conn.close()
