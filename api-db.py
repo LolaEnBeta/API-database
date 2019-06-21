@@ -45,7 +45,7 @@ def bad_request(error):
     return make_response("bad request", 400)
 
 @app.route("/users/<int:user_id>", methods=["GET"])
-def get_users(user_id):
+def get_user_by_id(user_id):
     conn = sqlite3.connect("***/***.db")
 
     query = conn.cursor()
@@ -67,6 +67,21 @@ def get_users(user_id):
 @app.errorhandler(404)
 def not_found(error):
     return make_response("not found", 404)
+
+@app.route("/users", methods=["GET"])
+def get_users():
+    conn = sqlite3.connect("***/***.db")
+
+    query = conn.cursor()
+
+    sql = "SELECT * FROM users"
+
+    if (query.execute(sql)):
+        rows = query.fetchall()
+        users = []
+        for row in rows:
+            users.append(row)
+        return jsonify({"users": users})
 
 if __name__ == "__main__":
     app.run(debug=True)
