@@ -103,6 +103,9 @@ def modify_user_by_id(user_id):
 
     query = conn.cursor()
 
+    if not "age" in request.json:
+        abort(400)
+
     age = request.json.get("age")
 
     sql = "UPDATE users SET age = %d" % age
