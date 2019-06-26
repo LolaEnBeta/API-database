@@ -89,6 +89,13 @@ def delete_user_by_id(user_id):
 
     query = conn.cursor()
 
+    sql = "SELECT * FROM users WHERE id = %s" % user_id
+
+    if (query.execute(sql)):
+        user = query.fetchone()
+        if not user:
+            abort(404)
+
     sql = "DELETE FROM users WHERE id = %s" % user_id
 
     if (query.execute(sql)):
@@ -103,15 +110,23 @@ def modify_user_by_id(user_id):
 
     query = conn.cursor()
 
+    sql = "SELECT * FROM users WHERE id = %s" % user_id
+
+    if (query.execute(sql)):
+        user = query.fetchone()
+        if not user:
+            abort(404)
+
     if not "age" in request.json:
         abort(400)
 
     age = request.json.get("age")
 
-    sql = "UPDATE users SET age = %d" % age
-    "WHERE id = %s " % user_id
+    sql = "UPDATE users SET age = ? WHERE id = ?"
 
-    if (query.execute(sql)):
+    arguments = (age, user_id)
+
+    if (query.execute(sql, arguments)):
         query.close()
         conn.commit()
         conn.close()
