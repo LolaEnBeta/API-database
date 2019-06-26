@@ -62,7 +62,7 @@ def get_user_by_id(user_id):
         return jsonify({"user": user})
 
     else:
-        return "An erros has ocurred"
+        return "An error has ocurred"
 
 @app.errorhandler(404)
 def not_found(error):
@@ -96,6 +96,23 @@ def delete_user_by_id(user_id):
         conn.commit()
         conn.close()
         return "user deleted"
+
+@app.route("/users/<int:user_id>", methods=["PUT"])
+def modify_user_by_id(user_id):
+    conn = sqlite3.connect("***/***.db")
+
+    query = conn.cursor()
+
+    age = request.json.get("age")
+
+    sql = "UPDATE users SET age = %d" % age
+    "WHERE id = %s " % user_id
+
+    if (query.execute(sql)):
+        query.close()
+        conn.commit()
+        conn.close()
+        return "user modified"
 
 if __name__ == "__main__":
     app.run(debug=True)
