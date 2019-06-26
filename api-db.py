@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, make_response, abort
 import sqlite3
+from user import User
 
 app = Flask(__name__)
 
@@ -25,7 +26,9 @@ def create_user():
         print("This is not a number")
         exit()
 
-    arguments = (name, age)
+    user = User(name, age)
+
+    arguments = (user.name, user.age)
 
     sql = """
     INSERT INTO users (name, age)
