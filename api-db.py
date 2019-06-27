@@ -59,10 +59,11 @@ def get_user_by_id(user_id):
         user = query.fetchone()
         if not user:
             abort(404)
+        get_user = User(user[1], user[2])
         query.close()
         conn.commit()
         conn.close()
-        return jsonify({"user": user})
+        return jsonify({"user": get_user.to_json(user)})
 
     else:
         return "An error has ocurred"
@@ -83,7 +84,8 @@ def get_users():
         rows = query.fetchall()
         users = []
         for row in rows:
-            users.append(row)
+            get_user = User(row[1], row[2])
+            users.append(get_user.to_json(row))
         return jsonify({"users": users})
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
@@ -117,23 +119,24 @@ def modify_user_by_id(user_id):
 
     if (query.execute(sql)):
         user = query.fetchone()
+        get_user = User(user[1], user[2])
         if not user:
             abort(404)
 
     if not "age" in request.json:
         abort(400)
 
-    age = request.json.get("age")
+    get_user.age = request.json.get("age")
 
     sql = "UPDATE users SET age = ? WHERE id = ?"
 
-    arguments = (age, user_id)
+    arguments = (get_user.age, user_id)
 
     if (query.execute(sql, arguments)):
         query.close()
         conn.commit()
         conn.close()
-        return "user modified"
+        return jsonify({"user modified": get_user.to_json(user)})
 
 if __name__ == "__main__":
     app.run(debug=True)
