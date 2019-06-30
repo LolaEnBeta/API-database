@@ -40,11 +40,11 @@ def get_user_by_id(user_id):
         user = query.fetchone()
         if not user:
             abort(404)
-        get_user = User(user[1], user[2])
+        get_user = User(user[1], user[2], user[0])
         query.close()
         conn.commit()
         conn.close()
-        return jsonify({"user": get_user.to_json(user)})
+        return jsonify({"user": get_user.to_json_2()})
 
     else:
         return "An error has ocurred"
