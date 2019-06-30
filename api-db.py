@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, make_response, abort
 import sqlite3
 from user import User
+import UserRepository
 
 app = Flask(__name__)
 
@@ -10,9 +11,6 @@ def index():
 
 @app.route("/users", methods=["POST"])
 def create_user():
-    conn = sqlite3.connect("sqlite3/database.db")
-
-    query = conn.cursor()
 
     if not "name" in request.json or not "age" in request.json:
         abort(400)
@@ -27,21 +25,8 @@ def create_user():
         exit()
 
     user = User(name, age)
-
-    arguments = (user.name, user.age)
-
-    sql = """
-    INSERT INTO users (name, age)
-    VALUES (?, ?)
-    """
-
-    if (query.execute(sql, arguments)):
-        query.close()
-        conn.commit()
-        conn.close()
-        return "User created successfully"
-    else:
-        return "An error has ocurred"
+    result = UserRepository.add(user)
+    return result
 
 @app.errorhandler(400)
 def bad_request(error):
