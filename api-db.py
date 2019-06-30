@@ -34,7 +34,7 @@ def get_user_by_id(user_id):
         user = UserRepository.get_by_id(user_id)
         if not user:
             abort(404)
-        return jsonify({"user": user.to_json()})
+        return jsonify(user.to_json())
     except:
         return "An error has occurred"
 
