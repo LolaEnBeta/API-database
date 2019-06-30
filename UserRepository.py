@@ -37,4 +37,4 @@ def get_by_id(id):
         return user
 
     else:
-        return "An error has ocurred"
+        raise Exception("Some error")

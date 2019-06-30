@@ -30,10 +30,13 @@ def create_user():
 
 @app.route("/users/<int:user_id>", methods=["GET"])
 def get_user_by_id(user_id):
-    user = UserRepository.get_by_id(user_id)
-    if not user:
-        abort(404)
-    return jsonify({"user": user.to_json()})
+    try:
+        user = UserRepository.get_by_id(user_id)
+        if not user:
+            abort(404)
+        return jsonify({"user": user.to_json()})
+    except:
+        return "An error has occurred"
 
 @app.route("/users", methods=["GET"])
 def get_users():
