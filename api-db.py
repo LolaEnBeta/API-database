@@ -28,10 +28,6 @@ def create_user():
     result = UserRepository.add(user)
     return result
 
-@app.errorhandler(400)
-def bad_request(error):
-    return make_response("bad request", 400)
-
 @app.route("/users/<int:user_id>", methods=["GET"])
 def get_user_by_id(user_id):
     conn = sqlite3.connect("sqlite3/database.db")
@@ -52,10 +48,6 @@ def get_user_by_id(user_id):
 
     else:
         return "An error has ocurred"
-
-@app.errorhandler(404)
-def not_found(error):
-    return make_response("not found", 404)
 
 @app.route("/users", methods=["GET"])
 def get_users():
@@ -122,6 +114,14 @@ def modify_user_by_id(user_id):
         conn.commit()
         conn.close()
         return jsonify({"user modified": get_user.to_json(user)})
+
+@app.errorhandler(400)
+def bad_request(error):
+    return make_response("bad request", 400)
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response("not found", 404)
 
 if __name__ == "__main__":
     app.run(debug=True)
