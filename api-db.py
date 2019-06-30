@@ -24,7 +24,7 @@ def create_user():
         print("This is not a number")
         exit()
 
-    user = User(name, age)
+    user = User(None, name, age)
     result = UserRepository.add(user)
     return result
 
@@ -40,7 +40,7 @@ def get_user_by_id(user_id):
         user = query.fetchone()
         if not user:
             abort(404)
-        get_user = User(user[1], user[2], user[0])
+        get_user = User(user[0], user[1], user[2])
         query.close()
         conn.commit()
         conn.close()
@@ -61,7 +61,7 @@ def get_users():
         rows = query.fetchall()
         users = []
         for row in rows:
-            get_user = User(row[1], row[2], row[0])
+            get_user = User(row[0], row[1], row[2])
             users.append(get_user.to_json())
         return jsonify({"users": users})
 
@@ -96,7 +96,7 @@ def modify_user_by_id(user_id):
 
     if (query.execute(sql)):
         user = query.fetchone()
-        get_user = User(user[1], user[2], user[0])
+        get_user = User(user[0], user[1], user[2])
         if not user:
             abort(404)
 
