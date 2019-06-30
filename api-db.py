@@ -30,24 +30,10 @@ def create_user():
 
 @app.route("/users/<int:user_id>", methods=["GET"])
 def get_user_by_id(user_id):
-    conn = sqlite3.connect("sqlite3/database.db")
-
-    query = conn.cursor()
-
-    sql = "SELECT * FROM users WHERE id = %s" % user_id
-
-    if (query.execute(sql)):
-        user = query.fetchone()
-        if not user:
-            abort(404)
-        get_user = User(user[0], user[1], user[2])
-        query.close()
-        conn.commit()
-        conn.close()
-        return jsonify({"user": get_user.to_json()})
-
-    else:
-        return "An error has ocurred"
+    user = UserRepository.get_by_id(user_id)
+    if not user:
+        abort(404)
+    return jsonify({"user": user.to_json()})
 
 @app.route("/users", methods=["GET"])
 def get_users():
