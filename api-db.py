@@ -44,7 +44,7 @@ def get_user_by_id(user_id):
         query.close()
         conn.commit()
         conn.close()
-        return jsonify({"user": get_user.to_json_2()})
+        return jsonify({"user": get_user.to_json()})
 
     else:
         return "An error has ocurred"
@@ -62,7 +62,7 @@ def get_users():
         users = []
         for row in rows:
             get_user = User(row[1], row[2], row[0])
-            users.append(get_user.to_json_2())
+            users.append(get_user.to_json())
         return jsonify({"users": users})
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
@@ -113,7 +113,7 @@ def modify_user_by_id(user_id):
         query.close()
         conn.commit()
         conn.close()
-        return jsonify({"user modified": get_user.to_json_2()})
+        return jsonify({"user modified": get_user.to_json()})
 
 @app.errorhandler(400)
 def bad_request(error):
