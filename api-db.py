@@ -10,7 +10,7 @@ def index():
 
 @app.route("/users", methods=["POST"])
 def create_user():
-    conn = sqlite3.connect("***/***.db")
+    conn = sqlite3.connect("sqlite3/database.db")
 
     query = conn.cursor()
 
@@ -49,7 +49,7 @@ def bad_request(error):
 
 @app.route("/users/<int:user_id>", methods=["GET"])
 def get_user_by_id(user_id):
-    conn = sqlite3.connect("***/***.db")
+    conn = sqlite3.connect("sqlite3/database.db")
 
     query = conn.cursor()
 
@@ -74,7 +74,7 @@ def not_found(error):
 
 @app.route("/users", methods=["GET"])
 def get_users():
-    conn = sqlite3.connect("***/***.db")
+    conn = sqlite3.connect("sqlite3/database.db")
 
     query = conn.cursor()
 
@@ -90,7 +90,7 @@ def get_users():
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
 def delete_user_by_id(user_id):
-    conn = sqlite3.connect("***/***.db")
+    conn = sqlite3.connect("sqlite3/database.db")
 
     query = conn.cursor()
 
@@ -111,7 +111,7 @@ def delete_user_by_id(user_id):
 
 @app.route("/users/<int:user_id>", methods=["PUT"])
 def modify_user_by_id(user_id):
-    conn = sqlite3.connect("***/***.db")
+    conn = sqlite3.connect("sqlite3/database.db")
 
     query = conn.cursor()
 

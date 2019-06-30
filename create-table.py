@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect("***/***.db")
+conn = sqlite3.connect("sqlite3/database.db")
 
 query = conn.cursor()
 
