@@ -61,8 +61,8 @@ def get_users():
         rows = query.fetchall()
         users = []
         for row in rows:
-            get_user = User(row[1], row[2])
-            users.append(get_user.to_json(row))
+            get_user = User(row[1], row[2], row[0])
+            users.append(get_user.to_json_2())
         return jsonify({"users": users})
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
@@ -96,7 +96,7 @@ def modify_user_by_id(user_id):
 
     if (query.execute(sql)):
         user = query.fetchone()
-        get_user = User(user[1], user[2])
+        get_user = User(user[1], user[2], user[0])
         if not user:
             abort(404)
 
@@ -113,7 +113,7 @@ def modify_user_by_id(user_id):
         query.close()
         conn.commit()
         conn.close()
-        return jsonify({"user modified": get_user.to_json(user)})
+        return jsonify({"user modified": get_user.to_json_2()})
 
 @app.errorhandler(400)
 def bad_request(error):
