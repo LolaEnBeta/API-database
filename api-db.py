@@ -56,24 +56,10 @@ def get_users():
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
 def delete_user_by_id(user_id):
-    conn = sqlite3.connect("sqlite3/database.db")
-
-    query = conn.cursor()
-
-    sql = "SELECT * FROM users WHERE id = %s" % user_id
-
-    if (query.execute(sql)):
-        user = query.fetchone()
-        if not user:
-            abort(404)
-
-    sql = "DELETE FROM users WHERE id = %s" % user_id
-
-    if (query.execute(sql)):
-        query.close()
-        conn.commit()
-        conn.close()
-        return "user deleted"
+    result = UserRepository.delete_by_id(user_id)
+    if not result:
+        abort(404)
+    return result
 
 @app.route("/users/<int:user_id>", methods=["PUT"])
 def modify_user_by_id(user_id):
