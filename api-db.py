@@ -40,19 +40,11 @@ def get_user_by_id(user_id):
 
 @app.route("/users", methods=["GET"])
 def get_users():
-    conn = sqlite3.connect("sqlite3/database.db")
-
-    query = conn.cursor()
-
-    sql = "SELECT * FROM users"
-
-    if (query.execute(sql)):
-        rows = query.fetchall()
-        users = []
-        for row in rows:
-            get_user = User(row[0], row[1], row[2])
-            users.append(get_user.to_json())
-        return jsonify({"users": users})
+    users = UserRepository.get_all()
+    users_list = []
+    for user in users:
+        users_list.append(user.to_json())
+    return jsonify({"users": users_list})
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
 def delete_user_by_id(user_id):

@@ -38,6 +38,20 @@ def get_by_id(id):
     else:
         raise Exception("Some error")
 
+def get_all():
+    conn = sqlite3.connect("sqlite3/database.db")
+    query = conn.cursor()
+
+    sql = "SELECT * FROM users"
+
+    if (query.execute(sql)):
+        rows = query.fetchall()
+        users = []
+        for row in rows:
+            user = User(row[0], row[1], row[2])
+            users.append(user)
+        return users
+
 def delete_by_id(id):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
