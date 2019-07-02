@@ -42,6 +42,10 @@ def create_dog():
         print("This is not a number")
         exit()
 
+    human = UserRepository.get_by_id(human_id)
+    if not human:
+        abort(404)
+
     dog = Dogs(None, name, human_id)
     result = UserRepository.add_dog(dog)
     return result
