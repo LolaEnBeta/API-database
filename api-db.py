@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, make_response, abort
 import sqlite3
 from user import User
+from dogs import Dogs
 import UserRepository
 
 app = Flask(__name__)
@@ -26,6 +27,23 @@ def create_user():
 
     user = User(None, name, age)
     result = UserRepository.add(user)
+    return result
+
+@app.route("/dogs", methods=["POST"])
+def create_dog():
+    if not "name" in request.json or not "human_id" in request.json:
+        abort(400)
+    name = request.json.get("name")
+    human_id = request.json.get("human_id")
+
+    try:
+        human_id = int(human_id)
+    except:
+        print("This is not a number")
+        exit()
+
+    dog = Dogs(None, name, human_id)
+    result = UserRepository.add_dog(dog)
     return result
 
 @app.route("/users/<int:user_id>", methods=["GET"])
