@@ -95,6 +95,25 @@ def get_all():
         conn.close()
         return users
 
+def get_all_dogs():
+    conn = sqlite3.connect("sqlite3/database.db")
+    query = conn.cursor()
+
+    sql = "SELECT * FROM dogs"
+
+    if (query.execute(sql)):
+        rows = query.fetchall()
+        dogs_list = []
+        for row in rows:
+            dog = Dogs(row[0], row[1], row[2])
+            dogs_list.append(dog)
+        query.close()
+        conn.commit()
+        conn.close()
+        return dogs_list
+    else:
+        raise Exception("Some error")
+
 def delete_by_id(id):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()

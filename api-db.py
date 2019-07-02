@@ -72,6 +72,14 @@ def get_users():
         users_list.append(user.to_json())
     return jsonify(users_list)
 
+@app.route("/dogs", methods=["GET"])
+def get_all_dogs():
+    dogs = UserRepository.get_all_dogs()
+    dogs_list = []
+    for dog in dogs:
+        dogs_list.append(dog.to_json())
+    return jsonify(dogs_list)
+
 @app.route("/users/<int:user_id>", methods=["DELETE"])
 def delete_user_by_id(user_id):
     result = UserRepository.delete_by_id(user_id)
