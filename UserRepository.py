@@ -1,5 +1,6 @@
 import sqlite3
 from user import User
+from dogs import Dogs
 
 def add(user):
     conn = sqlite3.connect("sqlite3/database.db")
@@ -54,6 +55,26 @@ def get_by_id(id):
         conn.commit()
         conn.close()
         return user
+    else:
+        raise Exception("Some error")
+
+def get_dog_by_id(id):
+    conn = sqlite3.connect("sqlite3/database.db")
+    query = conn.cursor()
+
+    sql = "SELECT * FROM dogs WHERE id = %s" % id
+
+    if (query.execute(sql)):
+        row = query.fetchone()
+        if not row:
+            return None
+
+        dog = Dogs(row[0], row[1], row[2])
+
+        query.close()
+        conn.commit()
+        conn.close()
+        return dog
     else:
         raise Exception("Some error")
 

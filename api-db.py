@@ -52,13 +52,17 @@ def create_dog():
 
 @app.route("/users/<int:user_id>", methods=["GET"])
 def get_user_by_id(user_id):
-    try:
-        user = UserRepository.get_by_id(user_id)
-        if not user:
-            abort(404)
-        return jsonify(user.to_json())
-    except:
-        return "An error has occurred"
+    user = UserRepository.get_by_id(user_id)
+    if not user:
+        abort(404)
+    return jsonify(user.to_json())
+
+@app.route("/dogs/<int:dog_id>", methods=["GET"])
+def get_dog_by_id(dog_id):
+    dog = UserRepository.get_dog_by_id(dog_id)
+    if not dog:
+        abort(404)
+    return jsonify(dog.to_json())
 
 @app.route("/users", methods=["GET"])
 def get_users():
