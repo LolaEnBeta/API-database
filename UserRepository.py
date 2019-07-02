@@ -20,6 +20,25 @@ def add(user):
     else:
         return "An error has ocurred"
 
+def add_dog(dog):
+    conn = sqlite3.connect("sqlite3/database.db")
+    query = conn.cursor()
+
+    arguments = (dog.name, dog.human_id)
+
+    sql = """
+    INSERT INTO dogs (name, human_id)
+    VALUES (?, ?)
+    """
+
+    if (query.execute(sql, arguments)):
+        query.close()
+        conn.commit()
+        conn.close()
+        return "Dog created successfully"
+    else:
+        return "An error has ocurred"
+
 def get_by_id(id):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
