@@ -81,8 +81,15 @@ def get_all_dogs():
     return jsonify(dogs_list)
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
-def delete_user_by_id(user_id):
+def remove_user_by_id(user_id):
     result = UserRepository.delete_by_id(user_id)
+    if not result:
+        abort(404)
+    return result
+
+@app.route("/dogs/<int:dog_id>", methods=["DELETE"])
+def remove_dog_by_id(dog_id):
+    result = UserRepository.remove_dog_by_id(dog_id)
     if not result:
         abort(404)
     return result

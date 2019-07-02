@@ -114,7 +114,7 @@ def get_all_dogs():
     else:
         raise Exception("Some error")
 
-def delete_by_id(id):
+def remove_by_id(id):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
     user = get_by_id(id)
@@ -128,6 +128,22 @@ def delete_by_id(id):
         conn.commit()
         conn.close()
         return "user deleted"
+
+def remove_dog_by_id(id):
+    conn = sqlite3.connect("sqlite3/database.db")
+    query = conn.cursor()
+
+    dog = get_dog_by_id(id)
+    if not dog:
+        return None
+
+    sql = "DELETE FROM dogs WHERE id = %s" % id
+
+    if (query.execute(sql)):
+        query.close()
+        conn.commit()
+        conn.close()
+        return "dog deleted"
 
 def modify_by_id(id, age):
     conn = sqlite3.connect("sqlite3/database.db")
