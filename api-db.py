@@ -44,7 +44,7 @@ def get_users():
     users_list = []
     for user in users:
         users_list.append(user.to_json())
-    return jsonify({"users": users_list})
+    return jsonify(users_list)
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
 def delete_user_by_id(user_id):
@@ -55,32 +55,14 @@ def delete_user_by_id(user_id):
 
 @app.route("/users/<int:user_id>", methods=["PUT"])
 def modify_user_by_id(user_id):
-    conn = sqlite3.connect("sqlite3/database.db")
-
-    query = conn.cursor()
-
-    sql = "SELECT * FROM users WHERE id = %s" % user_id
-
-    if (query.execute(sql)):
-        user = query.fetchone()
-        get_user = User(user[0], user[1], user[2])
-        if not user:
-            abort(404)
-
     if not "age" in request.json:
         abort(400)
 
-    get_user.age = request.json.get("age")
+    age = request.json.get("age")
 
-    sql = "UPDATE users SET age = ? WHERE id = ?"
+    user = UserRepository.modify_by_id(user_id, age)
 
-    arguments = (get_user.age, user_id)
-
-    if (query.execute(sql, arguments)):
-        query.close()
-        conn.commit()
-        conn.close()
-        return jsonify({"user modified": get_user.to_json()})
+    return jsonify(user.to_json())
 
 @app.errorhandler(400)
 def bad_request(error):

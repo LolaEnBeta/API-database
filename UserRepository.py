@@ -50,6 +50,9 @@ def get_all():
         for row in rows:
             user = User(row[0], row[1], row[2])
             users.append(user)
+        query.close()
+        conn.commit()
+        conn.close()
         return users
 
 def delete_by_id(id):
@@ -66,3 +69,22 @@ def delete_by_id(id):
         conn.commit()
         conn.close()
         return "user deleted"
+
+def modify_by_id(id, age):
+    conn = sqlite3.connect("sqlite3/database.db")
+    query = conn.cursor()
+
+    user = get_by_id(id)
+    if not user:
+        return None
+
+    sql = "UPDATE users SET age = ? WHERE id = ?"
+
+    arguments = (age, id)
+
+    if (query.execute(sql, arguments)):
+        query.close()
+        conn.commit()
+        user_modified = get_by_id(id)
+        conn.close()
+        return user_modified
