@@ -105,6 +105,22 @@ def modify_user_by_id(user_id):
 
     return jsonify(user.to_json())
 
+@app.route("/dogs/<int:dog_id>", methods=["PUT"])
+def modify_dog_by_id(dog_id):
+    if not "name" in request.json:
+        abort(400)
+
+    get_dog = get_dog_by_id(dog_id)
+
+    if not get_dog:
+        abort(404)
+
+    name = request.json.get("name")
+
+    dog = UserRepository.modify_dog_by_id(dog_id, name)
+
+    return jsonify(dog.to_json())
+
 @app.errorhandler(400)
 def bad_request(error):
     return make_response("bad request", 400)
