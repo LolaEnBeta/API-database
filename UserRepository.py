@@ -164,20 +164,16 @@ def modify_by_id(id, age):
         conn.close()
         return user_modified
 
-def modify_dog_by_id(id, name):
+def modify_dog_by_id(id, name, human_id):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 
-    dog = get_dog_by_id(id)
-    if not dog:
-        return None
-
-    sql = "UPDATE dogs SET name = ? WHERE id = ?"
-    arguments = (name, id)
+    sql = "UPDATE dogs SET name = ?, human_id = ? WHERE id = ?"
+    arguments = (name, human_id, id)
 
     if (query.execute(sql, arguments)):
         query.close()
         conn.commit()
-        dog_modified = get_dog_by_id(id)
         conn.close()
+        dog_modified = get_dog_by_id(id)
         return dog_modified
