@@ -42,12 +42,12 @@ def create_dog():
         print("This is not a number")
         exit()
 
-    human = UserRepository.get_by_id(human_id)
+    human = DogRepository.get_by_id(human_id)
     if not human:
         abort(404)
 
     dog = Dog(None, name, human_id)
-    result = UserRepository.add_dog(dog)
+    result = DogRepository.add_dog(dog)
     return result
 
 @app.route("/users/<int:user_id>", methods=["GET"])
@@ -59,7 +59,7 @@ def get_user_by_id(user_id):
 
 @app.route("/dogs/<int:dog_id>", methods=["GET"])
 def get_dog_by_id(dog_id):
-    dog = UserRepository.get_dog_by_id(dog_id)
+    dog = DogRepository.get_dog_by_id(dog_id)
     if not dog:
         abort(404)
     return jsonify(dog.to_json())
@@ -74,7 +74,7 @@ def get_users():
 
 @app.route("/dogs", methods=["GET"])
 def get_all_dogs():
-    dogs = UserRepository.get_all_dogs()
+    dogs = DogRepository.get_all_dogs()
     dogs_list = []
     for dog in dogs:
         dogs_list.append(dog.to_json())
@@ -89,7 +89,7 @@ def remove_user_by_id(user_id):
 
 @app.route("/dogs/<int:dog_id>", methods=["DELETE"])
 def remove_dog_by_id(dog_id):
-    result = UserRepository.remove_dog_by_id(dog_id)
+    result = DogRepository.remove_dog_by_id(dog_id)
     if not result:
         abort(404)
     return result
@@ -110,14 +110,14 @@ def modify_dog_by_id(dog_id):
     if not "name" in request.json and not "human_id" in request.json:
         abort(400)
 
-    dog = UserRepository.get_dog_by_id(dog_id)
+    dog = DogRepository.get_dog_by_id(dog_id)
     if not dog:
         abort(404)
 
     name = request.json.get("name", dog.name)
     human_id = request.json.get("human_id", dog.human_id)
 
-    dog_modified = UserRepository.modify_dog_by_id(dog_id, name, human_id)
+    dog_modified = DogRepository.modify_dog_by_id(dog_id, name, human_id)
     return jsonify(dog_modified.to_json())
 
 @app.errorhandler(400)
