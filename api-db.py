@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, make_response, abort
 import sqlite3
 from user import User
-from dogs import Dogs
+from dog import Dog
 import UserRepository
 
 app = Flask(__name__)
@@ -46,7 +46,7 @@ def create_dog():
     if not human:
         abort(404)
 
-    dog = Dogs(None, name, human_id)
+    dog = Dog(None, name, human_id)
     result = UserRepository.add_dog(dog)
     return result
 

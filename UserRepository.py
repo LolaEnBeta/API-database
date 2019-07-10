@@ -1,6 +1,6 @@
 import sqlite3
 from user import User
-from dogs import Dogs
+from dog import Dog
 
 def add(user):
     conn = sqlite3.connect("sqlite3/database.db")
@@ -69,7 +69,7 @@ def get_dog_by_id(id):
         if not row:
             return None
 
-        dog = Dogs(row[0], row[1], row[2])
+        dog = Dog(row[0], row[1], row[2])
 
         query.close()
         conn.commit()
@@ -105,7 +105,7 @@ def get_all_dogs():
         rows = query.fetchall()
         dogs_list = []
         for row in rows:
-            dog = Dogs(row[0], row[1], row[2])
+            dog = Dog(row[0], row[1], row[2])
             dogs_list.append(dog)
         query.close()
         conn.commit()

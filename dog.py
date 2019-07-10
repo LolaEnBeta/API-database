@@ -1,5 +1,5 @@
 
-class Dogs(object):
+class Dog(object):
     def __init__(self, id, name, human_id):
         self.id = id
         self.name = name
