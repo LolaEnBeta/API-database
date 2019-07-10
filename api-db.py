@@ -107,19 +107,18 @@ def modify_user_by_id(user_id):
 
 @app.route("/dogs/<int:dog_id>", methods=["PUT"])
 def modify_dog_by_id(dog_id):
-    if not "name" in request.json:
+    if not "name" in request.json and not "human_id" in request.json:
         abort(400)
 
-    get_dog = get_dog_by_id(dog_id)
-
-    if not get_dog:
+    dog = UserRepository.get_dog_by_id(dog_id)
+    if not dog:
         abort(404)
 
-    name = request.json.get("name")
+    name = request.json.get("name", dog.name)
+    human_id = request.json.get("human_id", dog.human_id)
 
-    dog = UserRepository.modify_dog_by_id(dog_id, name)
-
-    return jsonify(dog.to_json())
+    dog_modified = UserRepository.modify_dog_by_id(dog_id, name, human_id)
+    return jsonify(dog_modified.to_json())
 
 @app.errorhandler(400)
 def bad_request(error):
