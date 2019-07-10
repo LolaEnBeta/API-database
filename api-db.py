@@ -3,6 +3,7 @@ import sqlite3
 from user import User
 from dog import Dog
 import UserRepository
+import DogRepository
 
 app = Flask(__name__)
 
