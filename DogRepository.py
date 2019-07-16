@@ -88,3 +88,22 @@ def modify_dog_by_id(id, name, human_id):
         conn.close()
         dog_modified = get_dog_by_id(id)
         return dog_modified
+
+def get_dog_user_relation(dog):
+    conn = sqlite3.connect("sqlite3/database.db")
+    query = conn.cursor()
+
+    sql = """SELECT dogs.id, dogs.name, users.id, users.name
+    FROM dogs
+    LEFT JOIN users
+    ON dogs.human_id = users.id
+    WHERE dogs.id= %s""" % dog.id
+
+    if (query.execute(sql)):
+        row = query.fetchall()
+        if not row:
+            return None
+        query.close()
+        conn.commit()
+        conn.close()
+        return row

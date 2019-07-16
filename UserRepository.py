@@ -89,7 +89,7 @@ def modify_by_id(id, age):
         conn.close()
         return user_modified
 
-def get_human_dog_relation(user):
+def get_user_dog_relation(user):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 

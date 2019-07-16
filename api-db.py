@@ -118,14 +118,23 @@ def modify_dog_by_id(dog_id):
     return jsonify(dog_modified.to_json())
 
 @app.route("/users/<int:user_id>/dogs", methods=["GET"])
-def get_human_dog_relation(user_id):
+def get_user_dog_relation_by_user_id(user_id):
 
     user = UserRepository.get_by_id(user_id)
 
     if not user:
         abort(404)
 
-    relation = UserRepository.get_human_dog_relation(user)
+    relation = UserRepository.get_user_dog_relation(user)
+    return jsonify(relation)
+
+@app.route("/dogs/<int:dog_id>/users", methods=["GET"])
+def get_dog_user_relation_by_dog_id(dog_id):
+    dog = DogRepository.get_dog_by_id(dog_id)
+    if not dog:
+        abort(404)
+
+    relation = DogRepository.get_dog_user_relation(dog)
     return jsonify(relation)
 
 @app.errorhandler(400)
