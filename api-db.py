@@ -68,17 +68,13 @@ def get_dog_by_id(dog_id):
 @app.route("/users", methods=["GET"])
 def get_users():
     users = UserRepository.get_all()
-    users_list = []
-    for user in users:
-        users_list.append(user.to_json())
+    users_list = [user.to_json() for user in users]
     return jsonify(users_list)
 
 @app.route("/dogs", methods=["GET"])
 def get_all_dogs():
     dogs = DogRepository.get_all_dogs()
-    dogs_list = []
-    for dog in dogs:
-        dogs_list.append(dog.to_json())
+    dogs_list = [dog.to_json() for dog in dogs]
     return jsonify(dogs_list)
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
@@ -120,6 +116,17 @@ def modify_dog_by_id(dog_id):
 
     dog_modified = DogRepository.modify_dog_by_id(dog_id, name, human_id)
     return jsonify(dog_modified.to_json())
+
+@app.route("/users/<int:user_id>/dogs", methods=["GET"])
+def get_human_dog_relation(user_id):
+
+    user = UserRepository.get_by_id(user_id)
+
+    if not user:
+        abort(404)
+
+    relation = UserRepository.get_human_dog_relation(user)
+    return jsonify(relation)
 
 @app.errorhandler(400)
 def bad_request(error):
