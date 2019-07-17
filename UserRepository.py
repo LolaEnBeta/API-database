@@ -20,7 +20,7 @@ def add(user):
     else:
         return "An error has ocurred"
 
-def get_by_id(id):
+def get_by(id):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 
@@ -55,10 +55,10 @@ def get_all():
         conn.close()
         return users
 
-def remove_by_id(id):
+def remove(id):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
-    user = get_by_id(id)
+    user = get_by(id)
     if not user:
         return None
 
@@ -70,11 +70,11 @@ def remove_by_id(id):
         conn.close()
         return "user deleted"
 
-def modify_by_id(id, age):
+def modify(id, age):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 
-    user = get_by_id(id)
+    user = get_by(id)
     if not user:
         return None
 
@@ -85,7 +85,7 @@ def modify_by_id(id, age):
     if (query.execute(sql, arguments)):
         query.close()
         conn.commit()
-        user_modified = get_by_id(id)
+        user_modified = get_by(id)
         conn.close()
         return user_modified
 

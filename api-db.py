@@ -23,8 +23,7 @@ def create_user():
     try:
         age = int(age)
     except:
-        print("This is not a number")
-        exit()
+        return make_response(jsonify("This is not a number"), 400)
 
     user = User(None, name, age)
     result = UserRepository.add(user)
@@ -43,7 +42,7 @@ def create_dog():
         print("This is not a number")
         exit()
 
-    human = UserRepository.get_by_id(human_id)
+    human = UserRepository.get_by(human_id)
     if not human:
         abort(404)
 
@@ -53,7 +52,7 @@ def create_dog():
 
 @app.route("/users/<int:user_id>", methods=["GET"])
 def get_user_by_id(user_id):
-    user = UserRepository.get_by_id(user_id)
+    user = UserRepository.get_by(user_id)
     if not user:
         abort(404)
     return jsonify(user.to_json())
@@ -79,7 +78,7 @@ def get_all_dogs():
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
 def remove_user_by_id(user_id):
-    result = UserRepository.delete_by_id(user_id)
+    result = UserRepository.remove(user_id)
     if not result:
         abort(404)
     return result
@@ -98,7 +97,7 @@ def modify_user_by_id(user_id):
 
     age = request.json.get("age")
 
-    user = UserRepository.modify_by_id(user_id, age)
+    user = UserRepository.modify(user_id, age)
 
     return jsonify(user.to_json())
 
@@ -120,7 +119,7 @@ def modify_dog_by_id(dog_id):
 @app.route("/users/<int:user_id>/dogs", methods=["GET"])
 def get_user_dog_relation_by_user_id(user_id):
 
-    user = UserRepository.get_by_id(user_id)
+    user = UserRepository.get_by(user_id)
 
     if not user:
         abort(404)
