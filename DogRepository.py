@@ -1,7 +1,7 @@
 import sqlite3
 from dog import Dog
 
-def add_dog(dog):
+def add(dog):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 
@@ -20,7 +20,7 @@ def add_dog(dog):
     else:
         return "An error has ocurred"
 
-def get_dog_by_id(id):
+def get_by(id):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 
@@ -40,7 +40,7 @@ def get_dog_by_id(id):
     else:
         raise Exception("Some error")
 
-def get_all_dogs():
+def get_all():
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 
@@ -48,10 +48,7 @@ def get_all_dogs():
 
     if (query.execute(sql)):
         rows = query.fetchall()
-        dogs_list = []
-        for row in rows:
-            dog = Dog(row[0], row[1], row[2])
-            dogs_list.append(dog)
+        dogs_list = [Dog(row[0], row[1], row[2]) for row in rows]
         query.close()
         conn.commit()
         conn.close()
@@ -59,11 +56,11 @@ def get_all_dogs():
     else:
         raise Exception("Some error")
 
-def remove_dog_by_id(id):
+def remove(id):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 
-    dog = get_dog_by_id(id)
+    dog = get_by(id)
     if not dog:
         return None
 
@@ -75,7 +72,7 @@ def remove_dog_by_id(id):
         conn.close()
         return "dog deleted"
 
-def modify_dog_by_id(id, name, human_id):
+def modify(id, name, human_id):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 
@@ -86,7 +83,7 @@ def modify_dog_by_id(id, name, human_id):
         query.close()
         conn.commit()
         conn.close()
-        dog_modified = get_dog_by_id(id)
+        dog_modified = get_by(id)
         return dog_modified
 
 def get_dog_user_relation(dog):

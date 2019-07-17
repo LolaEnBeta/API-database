@@ -43,12 +43,12 @@ def create_dog():
         print("This is not a number")
         exit()
 
-    human = DogRepository.get_by_id(human_id)
+    human = UserRepository.get_by_id(human_id)
     if not human:
         abort(404)
 
     dog = Dog(None, name, human_id)
-    result = DogRepository.add_dog(dog)
+    result = DogRepository.add(dog)
     return result
 
 @app.route("/users/<int:user_id>", methods=["GET"])
@@ -60,7 +60,7 @@ def get_user_by_id(user_id):
 
 @app.route("/dogs/<int:dog_id>", methods=["GET"])
 def get_dog_by_id(dog_id):
-    dog = DogRepository.get_dog_by_id(dog_id)
+    dog = DogRepository.get_by(dog_id)
     if not dog:
         abort(404)
     return jsonify(dog.to_json())
@@ -73,7 +73,7 @@ def get_users():
 
 @app.route("/dogs", methods=["GET"])
 def get_all_dogs():
-    dogs = DogRepository.get_all_dogs()
+    dogs = DogRepository.get_all()
     dogs_list = [dog.to_json() for dog in dogs]
     return jsonify(dogs_list)
 
@@ -86,7 +86,7 @@ def remove_user_by_id(user_id):
 
 @app.route("/dogs/<int:dog_id>", methods=["DELETE"])
 def remove_dog_by_id(dog_id):
-    result = DogRepository.remove_dog_by_id(dog_id)
+    result = DogRepository.remove(dog_id)
     if not result:
         abort(404)
     return result
@@ -107,14 +107,14 @@ def modify_dog_by_id(dog_id):
     if not "name" in request.json and not "human_id" in request.json:
         abort(400)
 
-    dog = DogRepository.get_dog_by_id(dog_id)
+    dog = DogRepository.get_by(dog_id)
     if not dog:
         abort(404)
 
     name = request.json.get("name", dog.name)
     human_id = request.json.get("human_id", dog.human_id)
 
-    dog_modified = DogRepository.modify_dog_by_id(dog_id, name, human_id)
+    dog_modified = DogRepository.modify(dog_id, name, human_id)
     return jsonify(dog_modified.to_json())
 
 @app.route("/users/<int:user_id>/dogs", methods=["GET"])
@@ -130,7 +130,7 @@ def get_user_dog_relation_by_user_id(user_id):
 
 @app.route("/dogs/<int:dog_id>/users", methods=["GET"])
 def get_dog_user_relation_by_dog_id(dog_id):
-    dog = DogRepository.get_dog_by_id(dog_id)
+    dog = DogRepository.get_by(dog_id)
     if not dog:
         abort(404)
 
