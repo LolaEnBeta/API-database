@@ -84,7 +84,7 @@ def remove_user_by_id(user_id):
         abort(404)
 
     try:
-        result = UserRepository.remove(user)
+        UserRepository.remove(user)
         return "user deleted"
     except:
         abort(500)
@@ -106,12 +106,13 @@ def modify_user_by_id(user_id):
         abort(404)
 
     age = request.json.get("age")
-
     user.age = age
 
-    user = UserRepository.modify(user)
-
-    return jsonify(user.to_json())
+    try:
+        UserRepository.modify(user)
+        return jsonify(user.to_json())
+    except:
+        abort(500)
 
 @app.route("/dogs/<int:dog_id>", methods=["PUT"])
 def modify_dog_by_id(dog_id):

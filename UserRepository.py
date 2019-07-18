@@ -65,7 +65,7 @@ def remove(user):
         query.close()
         conn.commit()
         conn.close()
-        return True
+
 
 def modify(user):
     conn = sqlite3.connect("sqlite3/database.db")
@@ -78,9 +78,7 @@ def modify(user):
     if (query.execute(sql, arguments)):
         query.close()
         conn.commit()
-        user_modified = get_by(user.id)
         conn.close()
-        return user_modified
 
 def get_user_dog_relation(user):
     conn = sqlite3.connect("sqlite3/database.db")
