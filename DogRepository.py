@@ -67,19 +67,17 @@ def remove(dog):
         conn.commit()
         conn.close()
 
-def modify(id, name, human_id):
+def modify(dog):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 
     sql = "UPDATE dogs SET name = ?, human_id = ? WHERE id = ?"
-    arguments = (name, human_id, id)
+    arguments = (dog.name, dog.human_id, dog.id)
 
     if (query.execute(sql, arguments)):
         query.close()
         conn.commit()
         conn.close()
-        dog_modified = get_by(id)
-        return dog_modified
 
 def get_dog_user_relation(dog):
     conn = sqlite3.connect("sqlite3/database.db")
