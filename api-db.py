@@ -150,5 +150,9 @@ def bad_request(error):
 def not_found(error):
     return make_response("not found", 404)
 
+@app.errorhandler(500)
+def internal_server_error(error):
+    return make_response("internal server error", 500)
+
 if __name__ == "__main__":
     app.run(debug=True)
