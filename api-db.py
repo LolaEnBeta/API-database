@@ -91,10 +91,17 @@ def remove_user_by_id(user_id):
 
 @app.route("/dogs/<int:dog_id>", methods=["DELETE"])
 def remove_dog_by_id(dog_id):
-    result = DogRepository.remove(dog_id)
-    if not result:
+
+    dog = DogRepository.get_by(dog_id)
+
+    if not dog:
         abort(404)
-    return result
+
+    try:
+        DogRepository.remove(dog)
+        return "dog deleted"
+    except:
+        abort(500)
 
 @app.route("/users/<int:user_id>", methods=["PUT"])
 def modify_user_by_id(user_id):
