@@ -55,20 +55,17 @@ def get_all():
         conn.close()
         return users
 
-def remove(id):
+def remove(user):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
-    user = get_by(id)
-    if not user:
-        return None
 
-    sql = "DELETE FROM users WHERE id = %s" % id
+    sql = "DELETE FROM users WHERE id = %s" % user.id
 
     if (query.execute(sql)):
         query.close()
         conn.commit()
         conn.close()
-        return "user deleted"
+        return True
 
 def modify(user):
     conn = sqlite3.connect("sqlite3/database.db")
