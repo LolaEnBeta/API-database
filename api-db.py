@@ -95,9 +95,15 @@ def modify_user_by_id(user_id):
     if not "age" in request.json:
         abort(400)
 
+    user = UserRepository.get_by(user_id)
+    if not user:
+        abort(404)
+
     age = request.json.get("age")
 
-    user = UserRepository.modify(user_id, age)
+    user.age = age
+
+    user = UserRepository.modify(user)
 
     return jsonify(user.to_json())
 

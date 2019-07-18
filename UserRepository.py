@@ -70,22 +70,18 @@ def remove(id):
         conn.close()
         return "user deleted"
 
-def modify(id, age):
+def modify(user):
     conn = sqlite3.connect("sqlite3/database.db")
     query = conn.cursor()
 
-    user = get_by(id)
-    if not user:
-        return None
-
     sql = "UPDATE users SET age = ? WHERE id = ?"
 
-    arguments = (age, id)
+    arguments = (user.age, user.id)
 
     if (query.execute(sql, arguments)):
         query.close()
         conn.commit()
-        user_modified = get_by(id)
+        user_modified = get_by(user.id)
         conn.close()
         return user_modified
 
